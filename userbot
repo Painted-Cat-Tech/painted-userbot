@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-from pyrogram import Client,  filters
-import re,random,os,requests,ownutils,io,sys
-from asyncio import sleep
-testmode=0
+from pyrogram import Client
 app = Client(
     "my_account",
     plugins=dict(root="plugins")
