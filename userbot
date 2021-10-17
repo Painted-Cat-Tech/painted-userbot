@@ -5,12 +5,12 @@ app = Client(
     plugins=dict(root="plugins")
     )
 
-@Client.on_message(filters.command("test", prefixes="%") & filters.me)
+@app.on_message(filters.command("test", prefixes="%") & filters.me)
 async def test(client, message):
     await message.edit_text("Works good")
 
 
-@Client.on_message(filters.command("restart", prefixes="%") & filters.me)
+@app.on_message(filters.command("restart", prefixes="%") & filters.me)
 async def reboot(client, message):
     import os
     import sys
@@ -18,7 +18,7 @@ async def reboot(client, message):
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 
-@Client.on_message(filters.command("insmod", prefixes="%") & filters.me)
+@app.on_message(filters.command("insmod", prefixes="%") & filters.me)
 async def downloadmodule(client, message):
     args = message.text.split(" ")
     import os
