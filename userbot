@@ -4,4 +4,38 @@ app = Client(
     "my_account",
     plugins=dict(root="plugins")
     )
+
+@Client.on_message(filters.command("test", prefixes="%") & filters.me)
+async def test(client, message):
+    await message.edit_text("Works good")
+
+
+@Client.on_message(filters.command("restart", prefixes="%") & filters.me)
+async def reboot(client, message):
+    import os
+    import sys
+    await message.edit_text("Restarting")
+    os.execl(sys.executable, sys.executable, *sys.argv)
+
+
+@Client.on_message(filters.command("insmod", prefixes="%") & filters.me)
+async def downloadmodule(client, message):
+    args = message.text.split(" ")
+    import os
+    import requests
+    import pickle
+    if args[1] == "usage":
+        await message.edit_text("Usage:\n%insmod {module url} {module name}\nModule class:core\nDescription:download and install modules. TODO: depedency resolving")
+    elif len(args) < 3:
+        await message.edit_text("Too few arguments")
+    elif len(args) > 3:
+        await message.edit_text("Please, choose ONE module name.")
+    else:
+        with open(f"{args[2]}.py", "w") as modfile:
+            r = requests.get(args[1])
+            fc = r.content.decode("UTF-8")
+            modfile.write(fc)
+            await message.edit_text(f"Module {args[2]}.py installed")
+            
+            
 app.run()
