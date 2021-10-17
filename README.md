@@ -1,4 +1,3 @@
-**This project is closed-source. Next versions will be open-source i think.**
 # Painted Userbot
 ## Русская версия
 Это мой юзербот. Пока он с закрытыми для простых людей исходниками потому,что он не готов пока выходить в опенсурс. Причина:мало функций.
