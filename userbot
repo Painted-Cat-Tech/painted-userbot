@@ -24,7 +24,6 @@ async def downloadmodule(client, message):
     args = message.text.split(" ")
     import os
     import requests
-    import pickle
     import json
     if args[1] == "usage":
         await message.edit_text("Usage:\n%insmod {module url} {OPTIONAL:module name}\nModule class:core\nDescription:download and install modules. TODO: depedency resolving")
