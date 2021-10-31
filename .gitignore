@@ -1,4 +1,6 @@
 __pycache__/
 plugins/__pycache__/
 my_account.session
-my_account.session_journal
+my_account.session-journal
+config.ini
+plugins/

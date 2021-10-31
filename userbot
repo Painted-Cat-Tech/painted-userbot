@@ -25,17 +25,28 @@ async def downloadmodule(client, message):
     import requests
     import pickle
     if args[1] == "usage":
-        await message.edit_text("Usage:\n%insmod {module url} {module name}\nModule class:core\nDescription:download and install modules. TODO: depedency resolving")
-    elif len(args) < 3:
-        await message.edit_text("Too few arguments")
+        await message.edit_text("Usage:\n%insmod {module url} {OPTIONAL:module name}\nModule class:core\nDescription:download and install modules. TODO: depedency resolving")
     elif len(args) > 3:
         await message.edit_text("Please, choose ONE module name.")
+    elif len(args) < 2:
+        await message.edit_text("I need link for download")
     else:
-        with open(f"{args[2]}.py", "w") as modfile:
+        if len(args) == 2 :
+            link=args[1].split("/")
+            name=link[len(link)-1]
+        else:
+            name=args[2]+".py"
+        try:
+            os.chdir("plugins")
+        except FileNotFoundError:
+            os.mkdir("plugins")
+            os.chdir("plugins")
+        with open(f"{name}", "w") as modfile:
             r = requests.get(args[1])
             fc = r.content.decode("UTF-8")
             modfile.write(fc)
-            await message.edit_text(f"Module {args[2]}.py installed")
-            
-            
+            await message.edit_text(f"Module {name} installed")
+        os.chdir("../")
+
+
 app.run()
