@@ -19,6 +19,14 @@ async def reboot(client, message):
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 
+@app.on_message(filters.command("shutdown", prefixes="%") & filters.me)
+async def shutdown(client, message):
+    import sys
+    await message.edit_text("Turned off")
+    print("Turned off from chat")
+    sys.exit()
+
+
 @app.on_message(filters.command("insmod", prefixes="%") & filters.me)
 async def downloadmodule(client, message):
     args = message.text.split(" ")
