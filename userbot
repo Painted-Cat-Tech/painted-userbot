@@ -74,4 +74,16 @@ async def downloadmodule(client, message):
             pass
 
 
+@app.on_message(filters.command("info", prefixes="%") & filters.me)
+async def info(client, message):
+    import os
+    try:
+        moduleslen=len(os.listdir('plugins'))-1
+    except ValueError:
+        moduleslen=0
+    except FileNotFoundError:
+        moduleslen=0
+    await message.edit_text(f"[Painted Userbot](https://github.com/Painted-Cat-Tech/painted-userbot)\nVersion:0.3-indev\nCount of modules:{moduleslen}",parse_mode="markdown")
+
+
 app.run()
