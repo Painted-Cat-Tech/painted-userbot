@@ -6,3 +6,4 @@ config.ini
 plugins/
 configs/
 downloads/
+.mypy_cache/
