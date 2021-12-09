@@ -1,52 +1,61 @@
 import json
 '''
-version 0.1. In development. UNSAVETY!. CAN BREAK USERBOT!
-
+version 0.2
+In development. UNSAVETY!. CAN BREAK USERBOT!
+Codes:
+0:ok
+1:already exists
+2:var does not exists
+3:table does not exists
 '''
 db = str("rootdb.json")
 
 
-def gettable(name: str) -> dict:
+def gettable(name: str):
     global db
     try:
         with open(db, "r") as settingsfile:
             settings = json.load(settingsfile)
             return settings[name]
     except IndexError:
-        return {"Error": "Module not found"}
+        return 3
 
 
-def settable(name: str, data: dict) -> bool:
+def settable(name: str, data: dict) -> int:
     global db
     with open(db, "r") as settingsfile:
         settings = json.load(settingsfile)
     try:
         settings[name] = data
     except IndexError:
-        return False
+        return 3
     with open(db, "w") as settingsfile:
         json.dump(settings, settingsfile)
-    return True
+    return 0
 
 
-def setvalue(name: str, var: str, value) -> bool:
+def setvalue(name: str, var: str, value) -> int:
     global db
     with open(db, "r") as settingsfile:
         settings = json.load(settingsfile)
-    try:
-        settings[name] = value
-    except IndexError:
-        return False
-    with open(db, "w") as settingsfile:
-        json.dump(settings, settingsfile)
-    return True
+    if name in settings[name]:
+        try:
+            settings[name] = value
+        except KeyError:
+            return 2
+        with open(db, "w") as settingsfile:
+            json.dump(settings, settingsfile)
+        return 0
 
 
 def getvalue(name: str, var: str):
     global db
-    with open(db, "r") as settingsfile:
-        settings = json.load(settingsfile)
-    return settings[name][var]
+    try:
+        with open(db, "r") as settingsfile:
+            settings = json.load(settingsfile)
+            return settings[name][var]
+    except IndexError:
+        return 2
 
 
 def getlang() -> str:
@@ -61,14 +70,19 @@ def setlang(lang: str) -> bool:
     with open(db, "r") as settingsfile:
         settings = json.load(settingsfile)
     settings["root"]["lang"] = lang
-    return True
+    return 0
 
 
-def create(data: dict, file: str) -> bool:
+def create(data: dict, file: str) -> int:
     global db
-    name = data["name"]
+    try:
+        name = data["name"]
+    except KeyError:
+        return 2
     with open(db, "r") as settingsfile:
         settings = json.load(settingsfile)
+    if settings["root"]["modulelist"][name]:
+        return 1
     settings[name] = data
     settings["root"]["modulelist"].append({name: file})
     try:
@@ -81,20 +95,19 @@ def create(data: dict, file: str) -> bool:
         settings[name]["help"] = "Help page not provided"
     with open(db, "w") as settingsfile:
         json.dump(settings, settingsfile)
-    return True
+    return 0
 
 
-def getfnbyname(name):
+def getfnbyname(name: str):
     global db
     with open(db, "r") as settingsfile:
         settings = json.load(settingsfile)
     del settings[name]
-    fn = None
     for mname in range(0, len(settings["root"]["modulelist"])):
         try:
             fn = settings["root"]["modulelist"][mname][name]
         except KeyError:
-            pass
+            return 2
     return fn
 
 
@@ -102,13 +115,16 @@ def delete(name: str) -> str:
     global db
     with open(db, "r") as settingsfile:
         settings = json.load(settingsfile)
-    del settings[name]
+    try:
+        del settings[name]
+    except KeyError:
+        return 3
     for mname in range(0, len(settings["root"]["modulelist"])):
         try:
             fn = settings["root"]["modulelist"][mname][name]
             settings["root"]["modulelist"].pop(mname)
         except KeyError:
-            pass
+            return 3
     with open(db, "w") as settingsfile:
         json.dump(settings, settingsfile)
     return fn
