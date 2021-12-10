@@ -165,7 +165,7 @@ Module class:core\nDescription:print list of modules\n
         msgtext += f'{list(settings["root"]["modulelist"][0])[0]}'
     else:
         for i in list(settings["root"]["modulelist"]):
-            msgtext += f"{i[0]}\n"
+            msgtext += f"{list(i.keys())[0]}\n"
     await message.edit_text(msgtext)
 
 
