@@ -104,7 +104,6 @@ BETA!!!!!""")
         if code == 0:
             await message.edit_text(f"Module {moddata['name']} installed")
         elif code == 1:
-            os.remove(f"plugins/{filename}")
             await message.edit_text(f"Module {moddata['name']} already installed")
 
 

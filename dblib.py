@@ -81,21 +81,29 @@ def create(data: dict, file: str) -> int:
         return 2
     with open(db, "r") as settingsfile:
         settings = json.load(settingsfile)
-    if settings["root"]["modulelist"][name]:
+    unique=True
+    for mname in settings["root"]["modulelist"]:
+        try:
+            mname[name]
+            unique=False
+        except KeyError:
+            pass
+    if unique==False:
         return 1
-    settings[name] = data
-    settings["root"]["modulelist"].append({name: file})
-    try:
-        settings[name]["description"] = data["description"]
-    except KeyError:
-        settings[name]["description"] = "Description not provided"
-    try:
-        settings[name]["help"] = data["help"]
-    except KeyError:
-        settings[name]["help"] = "Help page not provided"
-    with open(db, "w") as settingsfile:
-        json.dump(settings, settingsfile)
-    return 0
+    elif unique==True:
+        settings[name] = data
+        settings["root"]["modulelist"].append({name: file})
+        try:
+            settings[name]["description"] = data["description"]
+        except KeyError:
+            settings[name]["description"] = "Description not provided"
+        try:
+            settings[name]["help"] = data["help"]
+        except KeyError:
+            settings[name]["help"] = "Help page not provided"
+        with open(db, "w") as settingsfile:
+            json.dump(settings, settingsfile)
+        return 0
 
 
 def getfnbyname(name: str):
