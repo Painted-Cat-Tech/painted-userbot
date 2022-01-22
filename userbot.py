@@ -172,4 +172,5 @@ Module class:core\nDescription:print list of modules\n
 @app.on_message(filters.command("info", prefixes="%") & filters.me)
 async def info(client, message):
     await message.edit_text("[Painted Userbot](https://github.com/Painted-Cat-Tech/painted-userbot)\nVersion:0.3-indev)", parse_mode="markdown")
+print("Userbot ready to work") 
 app.run()
