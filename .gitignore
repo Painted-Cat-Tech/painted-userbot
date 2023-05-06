@@ -1,5 +1,5 @@
 __pycache__/
-plugins/__pycache__/
+**/__pycache__/
 my_account.session
 my_account.session-journal
 config.ini
